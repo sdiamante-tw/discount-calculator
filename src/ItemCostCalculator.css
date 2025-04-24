@@ -69,10 +69,25 @@ button:hover {
   color: #333;
   margin: 0.5rem 0;
   font-size: 1.1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.result h3:last-child {
+  border-bottom: none;
 }
 
 .result h3:first-child {
   color: #2c3e50;
   font-size: 1.2rem;
   font-weight: 600;
+}
+
+.total-with-tax {
+  color: #2c3e50 !important;
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  margin-top: 1rem !important;
+  padding-top: 1rem !important;
+  border-top: 2px solid #4a90e2 !important;
 } 

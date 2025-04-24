@@ -7,6 +7,10 @@ const ItemCostCalculator = () => {
   const [discount, setDiscount] = useState('');
   const [finalPrice, setFinalPrice] = useState(null);
   const [orderTotal, setOrderTotal] = useState(null);
+  const [taxAmount, setTaxAmount] = useState(null);
+  const [totalWithTax, setTotalWithTax] = useState(null);
+
+  const UTAH_TAX_RATE = 0.0685; // 6.85%
 
   const calculatePrices = () => {
     const priceValue = parseFloat(price);
@@ -16,6 +20,8 @@ const ItemCostCalculator = () => {
     if (isNaN(priceValue) || isNaN(quantityValue)) {
       setFinalPrice(null);
       setOrderTotal(null);
+      setTaxAmount(null);
+      setTotalWithTax(null);
       return;
     }
 
@@ -24,13 +30,21 @@ const ItemCostCalculator = () => {
     setOrderTotal(totalBeforeDiscount.toFixed(2));
 
     // Calculate final price with discount if provided
+    let finalPriceBeforeTax = totalBeforeDiscount;
     if (!isNaN(discountValue)) {
       const discountAmount = totalBeforeDiscount * (discountValue / 100);
-      const finalPriceValue = totalBeforeDiscount - discountAmount;
-      setFinalPrice(finalPriceValue.toFixed(2));
+      finalPriceBeforeTax = totalBeforeDiscount - discountAmount;
+      setFinalPrice(finalPriceBeforeTax.toFixed(2));
     } else {
       setFinalPrice(null);
     }
+
+    // Calculate tax and total with tax
+    const tax = finalPriceBeforeTax * UTAH_TAX_RATE;
+    const total = finalPriceBeforeTax + tax;
+    
+    setTaxAmount(tax.toFixed(2));
+    setTotalWithTax(total.toFixed(2));
   };
 
   return (
@@ -78,8 +92,10 @@ const ItemCostCalculator = () => {
         <div className="result">
           <h3>Order Total: ${orderTotal}</h3>
           {finalPrice !== null && (
-            <h3>Final Price (with discount): ${finalPrice}</h3>
+            <h3>Price After Discount: ${finalPrice}</h3>
           )}
+          <h3>Utah Sales Tax (6.85%): ${taxAmount}</h3>
+          <h3 className="total-with-tax">Total with Tax: ${totalWithTax}</h3>
         </div>
       )}
     </div>
